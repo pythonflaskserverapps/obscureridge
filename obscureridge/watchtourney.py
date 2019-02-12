@@ -74,7 +74,7 @@ def startup():
 
     chatbot.startup()
 
-    time.sleep(600)
+    time.sleep(3600)
 
     chatbot.shutdown()
 

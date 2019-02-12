@@ -2,7 +2,7 @@ from setuptools import setup
 from obscureridge import read_string_from_file
 
 setup(name='obscureridge',
-      version='0.0.2',
+      version='0.0.3',
       author='pythonflaskserverapps',
       author_email='pythonflaskserverapps@gmail.com',
       description='test project',
