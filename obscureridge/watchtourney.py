@@ -6,6 +6,7 @@ from obscureridge.chatbot import Chatbot
 
 from os import environ
 import time
+import random
 
 ###################################################
 
@@ -23,6 +24,40 @@ def getallfeaturedtourneys(kinds = ["created", "started"]):
 
 ###################################################
 
+class MyChatbot(Chatbot):
+    def __init__(self, lila2, tid):
+        super().__init__(lila2, tid)
+
+    def talkhandler(self, user, msg):
+        print("MY message {} : {}".format(user, msg))
+
+    def crowdhandler(self, nb, users, anons):
+        print("MY crowd {} : users = {} , anons = {}".format(nb, " ".join(users), anons))
+
+    def gamefinishedhandler(self, gid):                
+        gobj = self.games[gid]
+        ratingbias = gobj["ratingBias"]
+        score = gobj["score"]
+        nomoves = len(gobj["moves"])
+        whitename = gobj["whiteName"]
+        whiterating = gobj["whiteRating"]
+        blackname = gobj["blackName"]
+        blackrating = gobj["blackRating"]
+        rs = ratingbias * score        
+        if ( rs < -100 ) and ( nomoves > 1 ):            
+            upset = whitename            
+            upsetloser = blackname
+            if score < 0:
+                upset = blackname
+                upsetloser = whitename            
+            self.say(random.choice([
+                "what a game {} against {}".format(upset, upsetloser),
+                "wow {} defeats {}".format(upset, upsetloser),
+                "unbelievable {} beating {} higher rated".format(upset, abs(ratingbias))
+            ]))
+            if upset == blackname:
+                self.say("with black!")            
+
 def startup():
     chatuserlila2 = environ.get("CHATUSERLILA2", None)
 
@@ -35,11 +70,11 @@ def startup():
     else:
         print("could not find tourney")
 
-    chatbot = Chatbot(chatuserlila2, tid)
+    chatbot = MyChatbot(chatuserlila2, tid)
 
     chatbot.startup()
 
-    time.sleep(60)
+    time.sleep(600)
 
     chatbot.shutdown()
 

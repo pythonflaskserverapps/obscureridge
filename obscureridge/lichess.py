@@ -28,6 +28,12 @@ MAX_TOURNEY_LENGTH_MINS = 360
 def getalltourneysurl():
     return "{}/tournament".format(API_URL)
 
+def gettourneyurl(tid):
+    return "{}/tournament/{}".format(API_URL, tid)
+
+def gettourneygamesurl(tid):
+    return "{}/tournament/{}/games".format(API_URL, tid)
+
 ###################################################
 
 def randsri():
