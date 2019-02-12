@@ -32,6 +32,7 @@ class MyChatbot(Chatbot):
         print("MY message {} : {}".format(user, msg))
 
     def crowdhandler(self, nb, users, anons):
+        return
         print("MY crowd {} : users = {} , anons = {}".format(nb, " ".join(users), anons))
 
     def gamefinishedhandler(self, gid):                
@@ -44,6 +45,9 @@ class MyChatbot(Chatbot):
         blackname = gobj["blackName"]
         blackrating = gobj["blackRating"]
         rs = ratingbias * score        
+        if score < 0:
+            rs = rs * 5        
+        print("game finished", whitename, whiterating, blackname, blackrating, score, rs)
         if ( rs < -100 ) and ( nomoves > 1 ):            
             upset = whitename            
             upsetloser = blackname
@@ -51,12 +55,16 @@ class MyChatbot(Chatbot):
                 upset = blackname
                 upsetloser = whitename            
             self.say(random.choice([
-                "what a game {} against {}".format(upset, upsetloser),
+                "what a game {} wins against {}".format(upset, upsetloser),
                 "wow {} defeats {}".format(upset, upsetloser),
                 "unbelievable {} beating {} higher rated".format(upset, abs(ratingbias))
             ]))
             if upset == blackname:
-                self.say("with black!")            
+                self.say("with black!")
+            self.say("grats @{}".format(upset))
+        elif ( ( whiterating - blackrating ) > 100 ) and ( score == 0 ):            
+            say("lol {} draws {} with black".format(blackname, whitename))
+            self.say("well done @{}".format(blackname))
 
 def startup():
     chatuserlila2 = environ.get("CHATUSERLILA2", None)
@@ -74,7 +82,7 @@ def startup():
 
     chatbot.startup()
 
-    time.sleep(3600)
+    time.sleep(3600 * 6)
 
     chatbot.shutdown()
 

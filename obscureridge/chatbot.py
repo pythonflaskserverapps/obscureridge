@@ -135,7 +135,7 @@ class Chatbot:
                 except:
                     pass            
             first = False
-            time.sleep(5 * KEEPALIVE_SLEEP)
+            time.sleep(KEEPALIVE_SLEEP)
         print("read games thread terminated for {}".format(self.tid))
 
     def shutdown(self):
