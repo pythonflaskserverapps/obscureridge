@@ -59,8 +59,10 @@ class MyChatbot(Chatbot):
                 "wow {} defeats {}".format(upset, upsetloser),
                 "unbelievable {} beating {} higher rated".format(upset, abs(ratingbias))
             ]))
+            time.sleep(2)
             if upset == blackname:
                 self.say("with black!")
+            time.sleep(2)
             self.say(random.choice([
                 "grats @{}".format(upset),
                 "gg @{}".format(upset),
@@ -68,6 +70,7 @@ class MyChatbot(Chatbot):
             ]))
         elif ( ( whiterating - blackrating ) > 100 ) and ( score == 0 ):            
             say("lol {} draws {} with black".format(blackname, whitename))
+            time.sleep(2)
             self.say(random.choice([
                 "grats @{}".format(blackname),
                 "gg @{}".format(blackname),
@@ -90,12 +93,13 @@ def startup():
             if not ( tid in bottids ):
                 print("no bot yet, creating one")
                 chatbot = MyChatbot(chatuserlila2, tid)
+                chatbot.startup()
                 bottids[tid] = True
             else:
                 print("bot already up")
         else:
             print("could not find tourney")
 
-        time.sleep(60)
+        time.sleep(180)
 
 ###################################################
