@@ -7,6 +7,8 @@ name = "pypi"
 setuptools = "*"
 wheel = "*"
 twine = "*"
+"urllib3" = "*"
+websocket-client = "*"
 
 [dev-packages]
 
