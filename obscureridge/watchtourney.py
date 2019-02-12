@@ -46,7 +46,7 @@ class MyChatbot(Chatbot):
         blackrating = gobj["blackRating"]
         rs = ratingbias * score        
         if score < 0:
-            rs = rs * 5        
+            rs = rs * 2        
         print("game finished", whitename, whiterating, blackname, blackrating, score, rs)
         if ( rs < -100 ) and ( nomoves > 1 ):            
             upset = whitename            
@@ -61,29 +61,41 @@ class MyChatbot(Chatbot):
             ]))
             if upset == blackname:
                 self.say("with black!")
-            self.say("grats @{}".format(upset))
+            self.say(random.choice([
+                "grats @{}".format(upset),
+                "gg @{}".format(upset),
+                "well done @{}".format(upset)
+            ]))
         elif ( ( whiterating - blackrating ) > 100 ) and ( score == 0 ):            
             say("lol {} draws {} with black".format(blackname, whitename))
-            self.say("well done @{}".format(blackname))
+            self.say(random.choice([
+                "grats @{}".format(blackname),
+                "gg @{}".format(blackname),
+                "well done @{}".format(blackname)
+            ]))
+
+bottids = {}
 
 def startup():
     chatuserlila2 = environ.get("CHATUSERLILA2", None)
 
-    tourneys = getallfeaturedtourneys()
+    while True:
+        print("getting tourneys for chatbot")
+        tourneys = getallfeaturedtourneys()
 
-    if len(tourneys) > 0:
-        tourney = tourneys[0]
-        tid = tourney["id"]
-        print("found tourney {}".format(tid))
-    else:
-        print("could not find tourney")
+        if len(tourneys) > 0:
+            tourney = tourneys[0]
+            tid = tourney["id"]
+            print("found tourney {}".format(tid))
+            if not ( tid in bottids ):
+                print("no bot yet, creating one")
+                chatbot = MyChatbot(chatuserlila2, tid)
+                bottids[tid] = True
+            else:
+                print("bot already up")
+        else:
+            print("could not find tourney")
 
-    chatbot = MyChatbot(chatuserlila2, tid)
-
-    chatbot.startup()
-
-    time.sleep(3600 * 6)
-
-    chatbot.shutdown()
+        time.sleep(60)
 
 ###################################################

@@ -17,11 +17,9 @@ http = urllib3.PoolManager(
 ###################################################
 
 def geturl(url, headers = {}, encoding = "utf-8"):        
-    try:
-        print("getting", url)
+    try:        
         r = http.request("GET", url, headers = headers)
-        content = r.data.decode(encoding)
-        print("received length", len(content), "for", url)
+        content = r.data.decode(encoding)        
     except:
         pe()
         content = None
